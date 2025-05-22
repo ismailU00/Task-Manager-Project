@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="description" content="Görev Yöneticisi - Sezgisel görev yönetimi uygulamamızla günlük görevlerinizi etkili bir şekilde düzenleyin" />
+    <title>Görev Yöneticisi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="/client/src/assets/styles.css">
+    <link rel="stylesheet" href="/client/src/assets/tailwind.css">
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-20">
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-2">
+            <i class="ri-task-line text-2xl text-primary"></i>
+            <h1 class="text-xl font-semibold">Görev Yöneticisi</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <nav class="hidden md:flex space-x-6">
+              <a href="#" class="nav-link active" data-page="dashboard">Görev Paneli</a>
+              <a href="#" class="nav-link" data-page="projects">Projeler</a>
+              <a href="#" class="nav-link" data-page="calendar">Takvim</a>
+              <a href="#" class="nav-link" data-page="reports">Raporlar</a>
+            </nav>
+            <button id="darkModeToggle" class="p-2 rounded-full hover-bg-gray-100 dark-hover-bg-gray-700">
+              <i class="ri-sun-line dark-hidden"></i>
+              <i class="ri-moon-line hidden dark-inline"></i>
+            </button>
+            <!-- buttons-->
+            <div id="authButtons" class="flex space-x-2">
+              <button id="loginBtn" class="px-4 py-2 border border-primary text-primary rounded-md hover-bg-blue-50">Giriş Yap</button>
+              <button id="signupBtn" class="px-4 py-2 bg-primary text-white rounded-md hover-bg-blue-600">Kayıt Ol</button>
+            </div>
+            <!-- User menu-->
+            <div class="relative hidden" id="userDropdown">
+              <button class="flex items-center space-x-1 focus:outline-none">
+                <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">
+                  <span class="text-sm font-medium" id="userInitials">JS</span>
+                </div>
+                <i class="ri-arrow-down-s-line"></i>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white dark-bg-gray-800 rounded-md shadow-lg py-1 z-50 hidden" id="userMenu">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark-text-gray-300 hover-bg-gray-100 dark-hover-bg-gray-700">Profil</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark-text-gray-300 hover-bg-gray-100 dark-hover-bg-gray-700">Ayarlar</a>
+                <div class="border-t border-gray-200 dark-border-gray-700"></div>
+                <a href="#" id="logoutBtn" class="block px-4 py-2 text-sm text-red-600 dark-text-red-400 hover-bg-gray-100 dark-hover-bg-gray-700">Çıkış Yap</a>
+              </div>
+            </div>
+            <button class="md:hidden" id="mobileMenuButton">
+              <i class="ri-menu-line text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <div class="md:hidden hidden mt-3 pb-2" id="mobileMenu">
+          <nav class="flex flex-col space-y-2">
+            <a href="#" class="nav-link-mobile active" data-page="dashboard">Görev Paneli</a>
+            <a href="#" class="nav-link-mobile" data-page="projects">Projeler</a>
+            <a href="#" class="nav-link-mobile" data-page="calendar">Takvim</a>
+            <a href="#" class="nav-link-mobile" data-page="reports">Raporlar</a>
+            <div class="border-t border-gray-100 dark-border-gray-700 pt-2 mt-2">
+              <button id="mobileLoginBtn" class="w-full text-left py-2 px-1 text-gray-700 dark-text-gray-300">Giriş Yap</button>
+              <button id="mobileSignupBtn" class="w-full text-left py-2 px-1 text-primary font-medium">Kayıt Ol</button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main  -->
+    <main class="flex-grow container mx-auto px-4 py-6">
+      <div id="main-content" class="flex flex-col md:flex-row gap-6">
+        <!-- Sidebar -->
+        <div class="md:w-1/4 w-full">
+          <div class="bg-white dark-bg-gray-800 rounded-lg shadow-sm p-4">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-semibold">Kategoriler</h2>
+              <button class="text-primary hover-text-primary-dark" id="addCategoryBtn">
+                <i class="ri-add-line"></i>
+              </button>
+            </div>
+            <ul class="space-y-2" id="categoryList">
+              <!-- kategori-->
+            </ul>
+          </div>
+
+          <div class="bg-white dark-bg-gray-800 rounded-lg shadow-sm p-4 mt-6">
+            <h2 class="text-lg font-semibold mb-4">Görev İstatistikleri</h2>
+            <div class="space-y-4" id="taskStatistics">
+              <!-- istatistikler -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Main  -->
+        <div class="md:w-3/4 w-full">
+          <div class="bg-white dark-bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-xl font-semibold">Görevlerim</h2>
+              <button id="addTaskBtn" class="bg-primary hover-bg-blue-600 text-white py-2 px-4 rounded-md flex items-center">
+                <i class="ri-add-line mr-1"></i>
+                Görev Ekle
+              </button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+              <div class="relative flex-grow">
+                <input type="text" id="taskSearch" placeholder="Bir Görev Arayın..." class="w-full pl-10 pr-4 py-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+                <i class="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark-text-gray-400"></i>
+              </div>
+              <select id="taskFilter" class="border dark-border-gray-700 rounded-md py-2 px-4 focus:outline-none focus-border-primary dark-bg-gray-700">
+                <option value="all">Tüm Görevler</option>
+                <option value="completed">Tamamlanmış Görevler</option>
+                <option value="pending">Beklemede Olan Görevler</option>
+              </select>
+            </div>
+
+            <div id="taskList" class="space-y-3">
+              <!-- Tasks  -->
+            </div>
+
+            <div class="flex justify-between mt-6 text-sm text-gray-500 dark-text-gray-400">
+              <span id="taskCounter">Gösterilen Görev 0</span>
+              <div class="flex space-x-2" id="pagination">
+                <!--  -->
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark-bg-gray-800 rounded-lg shadow-sm p-4">
+              <h2 class="text-lg font-semibold mb-3">Yaklaşan Teslim Tarihleri</h2>
+              <ul class="space-y-3" id="upcomingDeadlines">
+                <!-- son tarihi gelenler -->
+              </ul>
+            </div>
+
+            <div class="bg-white dark-bg-gray-800 rounded-lg shadow-sm p-4">
+              <h2 class="text-lg font-semibold mb-3">Hızlı Notlar</h2>
+              <div class="space-y-3" id="notesList">
+                <!-- Notes will be dynamically populated -->
+              </div>
+              <div class="mt-4">
+                <textarea id="newNote" placeholder="Yeni Bir Not Ekle..." class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700 h-20"></textarea>
+                <button id="addNoteBtn" class="mt-2 bg-gray-200 hover-bg-gray-300 dark-bg-gray-700 dark-hover-bg-gray-600 text-gray-800 dark-text-gray-200 py-1 px-3 rounded-md text-sm">Not Ekle</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Task  -->
+    <div id="taskModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-black opacity-50" id="modalOverlay"></div>
+        <div class="relative bg-white dark-bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-auto p-6 z-10">
+          <h3 class="text-lg font-semibold mb-4" id="taskModalTitle">Yeni Görev Ekle</h3>
+          <form id="taskForm" class="space-y-4">
+            <input type="hidden" id="taskId">
+            <div>
+              <label for="taskTitle" class="block text-sm font-medium mb-1">Görev Başlığı</label>
+              <input type="text" id="taskTitle" placeholder="Görevi Yazınız" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="taskTitleError" class="text-red-500 text-xs hidden">Görev Başlığı Gerekli</span>
+            </div>
+            <div>
+              <label for="taskDescription" class="block text-sm font-medium mb-1">Açıklama</label>
+              <textarea id="taskDescription" placeholder="Görevin Açkıklamasını Yazınınz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700 h-20"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="taskCategory" class="block text-sm font-medium mb-1">Kategori</label>
+                <select id="taskCategory" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+                  <option value="work">İş</option>
+                  <option value="personal">Kişisel</option>
+                  <option value="shopping">Alışveriş</option>
+                </select>
+              </div>
+              <div>
+                <label for="taskPriority" class="block text-sm font-medium mb-1">Öncelik</label>
+                <select id="taskPriority" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+                  <option value="low">Düşük</option>
+                  <option value="medium">Orta</option>
+                  <option value="high">Yüksek</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="taskDueDate" class="block text-sm font-medium mb-1">Bitiş Tarihi</label>
+              <input type="date" id="taskDueDate" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+              <button type="button" id="cancelTaskBtn" class="bg-gray-200 hover-bg-gray-300 dark-bg-gray-700 dark-hover-bg-gray-600 text-gray-800 dark-text-gray-200 py-2 px-4 rounded-md">İptal</button>
+              <button type="submit" id="submitTaskBtn" class="bg-primary hover-bg-blue-600 text-white py-2 px-4 rounded-md">Görev Ekle</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category  -->
+    <div id="categoryModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-black opacity-50" id="categoryModalOverlay"></div>
+        <div class="relative bg-white dark-bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-auto p-6 z-10">
+          <h3 class="text-lg font-semibold mb-4">Yeni Kategori Ekle</h3>
+          <form id="categoryForm" class="space-y-4">
+            <div>
+              <label for="categoryName" class="block text-sm font-medium mb-1">Kategori İsmi</label>
+              <input type="text" id="categoryName" placeholder="Kategori İsmi Giriniz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="categoryNameError" class="text-red-500 text-xs hidden">Kategori İsmi Gerekli </span>
+            </div>
+            <div>
+              <label for="categoryIcon" class="block text-sm font-medium mb-1">Icon</label>
+              <select id="categoryIcon" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+                <option value="ri-briefcase-line">İş</option>
+                <option value="ri-user-line">Kişisel</option>
+                <option value="ri-shopping-cart-line">Alışveriş</option>
+                <option value="ri-book-line">Eğitim</option>
+                <option value="ri-heart-line">Sağlık</option>
+                <option value="ri-home-line">Ev</option>
+              </select>
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+              <button type="button" id="cancelCategoryBtn" class="bg-gray-200 hover-bg-gray-300 dark-bg-gray-700 dark-hover-bg-gray-600 text-gray-800 dark-text-gray-200 py-2 px-4 rounded-md">İptal Et</button>
+              <button type="submit" class="bg-primary hover-bg-blue-600 text-white py-2 px-4 rounded-md">Kategori Ekle</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast bildirimi -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50 hidden">
+      <div class="flex items-center">
+        <i class="ri-check-line mr-2"></i>
+        <span id="toastMessage">Görev Başarıyla Eklendi</span>
+      </div>
+    </div>
+
+    <!-- Login  -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-black opacity-50" id="loginModalOverlay"></div>
+        <div class="relative bg-white dark-bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-auto p-6 z-10">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Giriş Yap</h3>
+            <button type="button" class="close-modal text-gray-500 hover-text-gray-700 dark-text-gray-400 dark-hover-text-gray-300">
+              <i class="ri-close-line text-xl"></i>
+            </button>
+          </div>
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label for="loginEmail" class="block text-sm font-medium mb-1">Email</label>
+              <input type="email" id="loginEmail" placeholder="Mailinizi Giriniz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="loginEmailError" class="text-red-500 text-xs hidden">Geçerli Bir Email Olmalı</span>
+            </div>
+            <div>
+              <label for="loginPassword" class="block text-sm font-medium mb-1">Şifre</label>
+              <input type="password" id="loginPassword" placeholder="Şifrenizi Giriniz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="loginPasswordError" class="text-red-500 text-xs hidden">Şifre Gerekli</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <input type="checkbox" id="rememberMe" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                <label for="rememberMe" class="ml-2 block text-sm text-gray-700 dark-text-gray-300">Beni Hatırla</label>
+              </div>
+              <a href="#" class="text-sm text-primary hover-text-primary-dark">Şifreni Mi Unuttun?</a>
+            </div>
+            <div>
+              <button type="submit" class="w-full bg-primary hover-bg-blue-600 text-white py-2 px-4 rounded-md">Giriş Yap</button>
+            </div>
+          </form>
+          <div class="mt-4 text-center text-sm text-gray-600 dark-text-gray-400">
+            <p>Hesabın Mı Yok? <button type="button" id="switchToSignup" class="text-primary hover-text-primary-dark">Kayıt Ol</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup  -->
+    <div id="signupModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="fixed inset-0 bg-black opacity-50" id="signupModalOverlay"></div>
+        <div class="relative bg-white dark-bg-gray-800 rounded-lg shadow-xl w-full max-w-md mx-auto p-6 z-10">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Hesap Yarat</h3>
+            <button type="button" class="close-modal text-gray-500 hover-text-gray-700 dark-text-gray-400 dark-hover-text-gray-300">
+              <i class="ri-close-line text-xl"></i>
+            </button>
+          </div>
+          <form id="signupForm" class="space-y-4">
+            <div>
+              <label for="signupName" class="block text-sm font-medium mb-1">Tüm İsminiz</label>
+              <input type="text" id="signupName" placeholder="Tüm İsminizi Giriniz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="signupNameError" class="text-red-500 text-xs hidden">İsim Gerekli</span>
+            </div>
+            <div>
+              <label for="signupEmail" class="block text-sm font-medium mb-1">Email</label>
+              <input type="email" id="signupEmail" placeholder="Mailinizi Giriniz" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="signupEmailError" class="text-red-500 text-xs hidden">Geçerli Email Gerekli</span>
+            </div>
+            <div>
+              <label for="signupPassword" class="block text-sm font-medium mb-1">Şifre</label>
+              <input type="password" id="signupPassword" placeholder="Bir Şifre Yaratın" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="signupPasswordError" class="text-red-500 text-xs hidden">Şifreniz En Az 8 Karakter Olmalıdır</span>
+            </div>
+            <div>
+              <label for="signupConfirmPassword" class="block text-sm font-medium mb-1">Şifreyi Onayla</label>
+              <input type="password" id="signupConfirmPassword" placeholder="Şifrenizi Doğrulayın" class="w-full p-2 border dark-border-gray-700 rounded-md focus:outline-none focus-border-primary dark-bg-gray-700">
+              <span id="signupConfirmPasswordError" class="text-red-500 text-xs hidden">Şifreler Eşleşmiyor</span>
+            </div>
+            <div class="flex items-center">
+              <input type="checkbox" id="agreeTerms" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+              <label for="agreeTerms" class="ml-2 block text-sm text-gray-700 dark-text-gray-300">Kabul Ediyorum <a href="#" class="text-primary hover-text-primary-dark">Şartlar</a> Ve <a href="#" class="text-primary hover-text-primary-dark">Gizlilik Politikası</a></label>
+              <span id="agreeTermsError" class="text-red-500 text-xs hidden ml-2">Şartları Kabul Etmeniz Gerekiyor</span>
+            </div>
+            <div>
+              <button type="submit" class="w-full bg-primary hover-bg-blue-600 text-white py-2 px-4 rounded-md">Kayıt Ol</button>
+            </div>
+          </form>
+          <div class="mt-4 text-center text-sm text-gray-600 dark-text-gray-400">
+            <p>Zaten Hesabın Var Mı? <button type="button" id="switchToLogin" class="text-primary hover-text-primary-dark">Giriş Yap</button></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark-bg-gray-800 shadow-sm mt-8">
+      <div class="container mx-auto px-4 py-4">
+        <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 dark-text-gray-400">
+          <div class="mb-2 md:mb-0">
+            <p>&copy; 2025 Görev Yöneticisi. Tüm Hakları Saklıdır.</p>
+          </div>
+          <div class="flex space-x-4">
+            <a href="#" class="hover-text-primary">Hizmet Şartlar</a>
+            <a href="#" class="hover-text-primary">Gizlilik Hakları</a>
+            <a href="#" class="hover-text-primary">Yardım</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/client/src/js/Auth.js"></script>
+    <script src="/client/src/js/Main.js"></script>
+    <script src="/client/src/js/TaskManager.js"></script>
+    <script src="/client/src/js/uiManager.js"></script>
+    <script src="/client/src/js/StorageManager.js"></script>
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>
